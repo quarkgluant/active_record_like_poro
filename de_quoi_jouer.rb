@@ -1,9 +1,5 @@
 module ClassMethods
-  attr_accessor :ids, :alls
-
-  def klass
-    self
-  end
+  # attr_accessor :ids, :alls
 
   def all
     ObjectSpace.each_object(self).to_a
@@ -23,9 +19,6 @@ module InstanceMethods
   def initialize
     @@ids += 1
     self.id = @@ids
-    # self.class.ids += 1
-    # self.id = klass.ids
-    # klass.all << self
   end
 
   def to_s
