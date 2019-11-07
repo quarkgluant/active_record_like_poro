@@ -8,7 +8,7 @@ class Bicycle
 end
 ```
 
-Le but du kata est de mimer le comportement d'ActiveRecord sur 2 points:
+Le but du kata est de mimer le comportement d'ActiveRecord sur plusieurs points:
 * créer une méthode `:id` qui permette, pour chaque nouvel objet instancié à
 partir de ces classes de lui donner un id unique  
 * Plus dur: créer une méthode `:find` telle qu'on puisse l'utiliser ainsi :
@@ -41,7 +41,7 @@ implication~~ on fait du ~~Canada-~~DRY (ouh-là là je suis en forme dis-donc !
 dans chaque classe, on ne les définit qu'**une seule fois**, par exemple dans un (ou 2) module(s) que vous importerez de
 la bonne manière, pour avoir une méthode d'instance (:id) ou une méthode de classe (:find)
 
-Bon, ça c'est fait, alors on continue à faire du ActiveRecord like, maintenant vous allez implémentez les 
+* Bon, ça c'est fait, alors on continue à faire du ActiveRecord like, maintenant vous allez implémentez les 
 [dynamic finders](https://guides.rubyonrails.org/active_record_querying.html#dynamic-finders)  
 ```ruby
 class Car
