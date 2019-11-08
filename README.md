@@ -48,7 +48,7 @@ importerez de la bonne manière, pour avoir une méthode d'instance (:id) ou une
      les @@nom_variable)
     * Maintenant, refactorisez en [virant les variables de classes](https://kakesa.net/blog/ruby-pourquoi-eviter-les-variables-de-classes/)
     pour les ids
-    * pour la méthode `Car.all` demandez à votre oracle préférer comment connaître toutes les instances d'une classe OU 
+    * pour la méthode `Car.all` demandez à votre oracle préféré comment connaître toutes les instances d'une classe OU 
     consulter la [doc](https://ruby-doc.org/core-2.6.5/ObjectSpace.html), vu qu'il n'y a que 6 méthodes, trouver la bonne 
     ne devrait pas être trop dur !
     * YAPUKA extraire toutes vos belles méthodes pour les mettre dans des modules, un pour les méthodes d'instances, un 
