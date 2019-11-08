@@ -43,7 +43,7 @@ importerez de la bonne manière, pour avoir une méthode d'instance (:id) ou une
 <details>
   <summary>A ne lire qu'après avoir cherché pendant au moins 5 heures :-)</summary>
   
-  * pour commencer, vous pouvez coder ces méthodes directement dans la classe Car, on verra après pour les mettre dans des modules  
+    * pour commencer, vous pouvez coder ces méthodes directement dans la classe Car, on verra après pour les mettre dans des modules  
     * il y a plusieurs façons de procéder, mais commencez avec des variables de classe (mais si vous connaissez, 
      les @@nom_variable)
     * Maintenant, refactorisez en [virant les variables de classes](https://kakesa.net/blog/ruby-pourquoi-eviter-les-variables-de-classes/)
@@ -55,7 +55,7 @@ importerez de la bonne manière, pour avoir une méthode d'instance (:id) ou une
     autre pour celles de classe et de les importer correctement grâce à **2** méthodes, une pour chacun des modules, que 
     vous trouverez [ici](https://ruby-doc.org/core-2.6.5/Module.html)
 </details>  
-
+  
 * Bon, ça c'est fait, alors on continue à faire du ActiveRecord like, maintenant vous allez implémentez les 
 [dynamic finders](https://guides.rubyonrails.org/active_record_querying.html#dynamic-finders)  
 ```ruby
@@ -71,16 +71,6 @@ class Car
 # ...
 end
 
-class Bicycle
-  def initialize(super_arguments_super_utiles_ou_rien)
-    # ...
-  end
-
-  def derailleur
-    # ...
-  end
-  # ...
-end
 first_car = Car.new(super_arguments_super_utiles_ou_rien)
 second_car = Car.new(super_arguments_super_utiles_ou_rien)
 third_car = Car.new(super_arguments_super_utiles_ou_rien)
@@ -92,17 +82,25 @@ Pour simplifier, on considérera que toutes les méthodes d'instance concernent 
 ce genre de méthode
 ```ruby
 class Bicycle
-  # ...
+  # ... genre de méthode q'il n'y aura PAS
   def calcul_developpement(rayon_roue, nb_pignons_roue, nb_pignons_pedalier)
   end 
 end
 end
 
 ```
-Bien entendu, vous ne devez **pas** coder en dur ces méthodes de recherche, elles doivent etre créer dynamiquement !  
+Bien entendu, vous ne devez **pas** coder en dur ces méthodes de recherche, elles doivent etre créer dynamiquement !   
 
-Pour ce faire vous allez avoir besoin de :
-* tout d'abord, il vous faut retrouver les méthodes définies sur chaque classe. Heureusement votre meilleur ami est là 
-pour vous aider la [doc officielle de Ruby](https://ruby-doc.org/core-2.6.5/Module.html) ! A vous de regarder quelle
-méthode ferait cela.  
-* maintenant qu'on a les noms des méthodes d'instances, on va itérer dessus, en définissant dynamiquement
+<details>
+  <summary>A ne lire qu'après avoir cherché pendant au moins 5 heures (ce qui fait déjà 10 heures!) :-)</summary>
+  
+    Pour ce faire vous allez avoir besoin de :
+    * tout d'abord, il vous faut retrouver les méthodes définies sur chaque classe. Heureusement votre meilleur ami est 
+    (toujours) là pour vous aider : la [doc officielle de Ruby](https://ruby-doc.org/core-2.6.5/Module.html) ! A vous de 
+    regarder quelle méthode ferait cela.  
+    * maintenant qu'on a les noms des méthodes d'instances, on va itérer dessus, en définissant dynamiquement. Des méthodes
+    comme `Module#class_eval`, `Module#define_method` ou `Object#send` peuvent vous être utiles (ou pas, suivant votre 
+    implémentation !)
+</details>  
+  
+
