@@ -24,11 +24,15 @@ module ClassMethods
     new.public_methods(all = false).each do |meth|
       # puts "method: #{meth}"
       next if meth.to_s.end_with? "="
-      self.class.class_eval do
-        define_method "find_by_#{meth}" do |arg|
-          # puts "find_by_#{meth} appelée avec #{arg}"
-          self.all.select { |instance| instance.send(meth) == arg }
-        end
+      # self.class.class_eval do
+      #   define_method "find_by_#{meth}" do |arg|
+      #     # puts "find_by_#{meth} appelée avec #{arg}"
+      #     self.all.select { |instance| instance.send(meth) == arg }
+      #   end
+
+      define_singleton_method "find_by_#{meth}" do |arg|
+        # puts "find_by_#{meth} appelée avec #{arg}"
+        self.all.select { |instance| instance.send(meth) == arg }
       end
     end
   end
@@ -50,7 +54,8 @@ module InstanceMethods
     # mais en plus, les id commence à 1 au lieu de 0 si l'appel est fait avant les premières instanciations
     # base.make_attr_finders
   end
-  attr_accessor :id
+
+  # attr_accessor :id
 
   # @@ids ||= 0
 
@@ -91,3 +96,4 @@ puts "Car.find(id: 3): #{Car.find(id: 3)}" #=>  Car 3
 Car.make_attr_finders
 puts "Car.find_by_motor('electric'): #{Car.find_by_motor('electric')}"
 puts "Car.find_by_id(3): #{Car.find_by_id(3)}" #=>[#<Car:0x000000000200ab70 @id=3>]
+# puts first_car.methods(regular=true)
