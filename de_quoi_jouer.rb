@@ -23,12 +23,11 @@ module ClassMethods
   def make_attr_finders
     new.public_methods(all = false).each do |meth|
       # puts "method: #{meth}"
-      unless meth.to_s.end_with? "="
-        self.class.class_eval do
-          define_method "find_by_#{meth}" do |arg|
-            # puts "find_by_#{meth} appelée avec #{arg}"
-            return self.all.select { |instance| instance.send(meth) == arg }
-          end
+      next if meth.to_s.end_with? "="
+      self.class.class_eval do
+        define_method "find_by_#{meth}" do |arg|
+          # puts "find_by_#{meth} appelée avec #{arg}"
+          self.all.select { |instance| instance.send(meth) == arg }
         end
       end
     end
@@ -36,14 +35,20 @@ module ClassMethods
 
   def self.extended(base)
     puts "#{self} (ClassMethods) a été inclus/étendu dans #{base}"
-    base.make_attr_finders
+    # puts "base.metaclass: #{base.metaclass}"
+    # base.instance_eval do
+    #   base.make_attr_finders
+    # end
+    # eval "#{base}.make_attr_finders"
   end
 end
 
 module InstanceMethods
   def self.included(base)
     puts "#{self} (InstanceMethods) a été inclus dans #{base}"
-    base.make_attr_finders
+    # si on décommente la ligne suivante, on est toujours obligé de faire Car.make_attr_finders
+    # mais en plus, les id commence à 1 au lieu de 0 si l'appel est fait avant les premières instanciations
+    # base.make_attr_finders
   end
   attr_accessor :id
 
@@ -74,21 +79,15 @@ class Car
   end
 end
 
-# class Bicycle
-#   attr_accessor :color, :derailleur
-#   include InstanceMethods
-#   extend ClassMethods
-# end
-
-GC.start
+# GC.start
 
 first_car = Car.new
 second_car = Car.new
 third_car = Car.new
 puts "first_car.id: #{first_car.id}" #=> 1
 puts "third_car.id: #{third_car.id}" #=> 3
-puts "Car.all: #{Car.all}"
-puts "Car.find(id: 3): #{Car.find(id: 3)}"
+puts "Car.all: #{Car.all}" #=> [#<Car:0x00000000013f3210 @id=1>, #<Car:0x00000000013f37b0 @id=3>, #<Car:0x00000000013f38a0 @id=2>]
+puts "Car.find(id: 3): #{Car.find(id: 3)}" #=>  Car 3
 Car.make_attr_finders
 puts "Car.find_by_motor('electric'): #{Car.find_by_motor('electric')}"
-puts "Car.find_by_id(3): #{Car.find_by_id(3)}"
+puts "Car.find_by_id(3): #{Car.find_by_id(3)}" #=>[#<Car:0x000000000200ab70 @id=3>]
