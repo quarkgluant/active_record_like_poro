@@ -66,6 +66,7 @@ class Car
   extend ClassMethods
   include InstanceMethods
 
+  # attr_accessor :color, :nb_portes
   attr_accessor :id, :color, :nb_portes
 
   def motor

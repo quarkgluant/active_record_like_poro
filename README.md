@@ -11,7 +11,7 @@ end
 Le but du kata est de mimer le comportement d'ActiveRecord sur plusieurs points:
 * créer une méthode `:id` qui permette, pour chaque nouvel objet instancié à
 partir de ces classes de lui donner un id unique  
-* Plus dur: créer une méthode `:find` telle qu'on puisse l'utiliser ainsi :
+* Un peu plus dur: créer une méthode `:find` telle qu'on puisse l'utiliser ainsi :
 ```ruby
 class Car
   def initialize(super_arguments_super_utiles_ou_rien)
@@ -37,7 +37,7 @@ Car.find(id: 3) #=> #<Car:0x0000000003bbd458 @id=3>
 Bicycle.find(id: 2)
 ```
 Bien entendu, ~~si vous-même ou l'un des membres de votre équipe était capturé, le Département d'Etat nierait toute 
-implication~~ on fait du ~~Canada-~~DRY (ouh-là là je suis en forme dis-donc !), donc pas question de définir ces 2 méthodes 
+implication~~ on fait du ~~Canada-~~ DRY (ouh-là là je suis en forme dis-donc !), donc pas question de définir ces 2 méthodes 
 dans chaque classe, on ne les définit qu'**une seule fois**, par exemple dans un (ou 2 ! spoiler...) module(s) que vous 
 importerez de la bonne manière, pour avoir une méthode d'instance (:id) ou une méthode de classe (:find)  
 <details>
@@ -47,7 +47,7 @@ importerez de la bonne manière, pour avoir une méthode d'instance (:id) ou une
     * il y a plusieurs façons de procéder, mais commencez avec des variables de classe (mais si vous connaissez, 
      les @@nom_variable)
     * Maintenant, refactorisez en [virant les variables de classes](https://kakesa.net/blog/ruby-pourquoi-eviter-les-variables-de-classes/)
-    pour les ids
+    pour les ids, en les remplaçant par des variables d'instance
     * pour la méthode `Car.all` demandez à votre oracle préféré comment connaître toutes les instances d'une classe OU 
     consulter la [doc](https://ruby-doc.org/core-2.6.5/ObjectSpace.html), vu qu'il n'y a que 6 méthodes, trouver la bonne 
     ne devrait pas être trop dur !
@@ -103,4 +103,3 @@ Bien entendu, vous ne devez **pas** coder en dur ces méthodes de recherche, ell
     implémentation !)
 </details>  
   
-
