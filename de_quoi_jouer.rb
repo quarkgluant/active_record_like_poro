@@ -1,5 +1,11 @@
 module ClassMethods
+  # ce module sera "inclus" avec extend, donc
+  # toutes les méthodes de ce module seront des méthodes de classe
 
+  # les 2 méthodes ci-dessous, équivalentes à attr_accessor mais "de classe"
+  # l'idée est d'utiliser non pas des variables de classe (@@ids) mais des
+  # variables d'instances de classe (à ne pas confondre avec les variables d'instance)
+  # puisque une classe est aussi un objet en Ruby
   def ids
     @ids ||= 0
   end
@@ -12,6 +18,9 @@ module ClassMethods
     self.ids = (ids + 1)
   end
 
+  # la méthode all, au lieu d'utiliser une variable de classe telle @@all, dans
+  # laquelle on mettrai chaque nouvel instance de Car lors de l'instantiation dans la
+  # méthode initialize de Car, utilise ObjectSpace#each_object
   def all
     ObjectSpace.each_object(self).to_a
   end
@@ -20,18 +29,11 @@ module ClassMethods
     all.select { |instance| instance.id == id }&.first
   end
 
+  # cette méthode génère dynamiquement les méthodes find_by_TRUC
   def make_attr_finders
     new.public_methods(all = false).each do |meth|
-      # puts "method: #{meth}"
       next if meth.to_s.end_with? "="
-      # self.class.class_eval do
-      #   define_method "find_by_#{meth}" do |arg|
-      #     # puts "find_by_#{meth} appelée avec #{arg}"
-      #     self.all.select { |instance| instance.send(meth) == arg }
-      #   end
-
       define_singleton_method "find_by_#{meth}" do |arg|
-        # puts "find_by_#{meth} appelée avec #{arg}"
         self.all.select { |instance| instance.send(meth) == arg }
       end
     end
@@ -39,6 +41,10 @@ module ClassMethods
 
   def self.extended(base)
     puts "#{self} (ClassMethods) a été inclus/étendu dans #{base}"
+    puts base.is_a? String
+    puts "base.public_methods(all = false): #{base.public_methods(all = false)}"
+    puts "base.respond_to? make_attr_finders: #{base.respond_to? :make_attr_finders}"
+    # base.send :make_attr_finders
     # puts "base.metaclass: #{base.metaclass}"
     # base.instance_eval do
     #   base.make_attr_finders
@@ -53,6 +59,8 @@ module InstanceMethods
     # si on décommente la ligne suivante, on est toujours obligé de faire Car.make_attr_finders
     # mais en plus, les id commence à 1 au lieu de 0 si l'appel est fait avant les premières instanciations
     # base.make_attr_finders
+    # base.send :make_attr_finders
+    puts "base.respond_to? make_attr_finders: #{base.respond_to? :make_attr_finders}"
   end
 
   # attr_accessor :id
